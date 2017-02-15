@@ -1,0 +1,27 @@
+---
+title: "Places I will visit soon!"
+author: "Douglas Young"
+date: "2/14/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+if (!require(leaflet)) install.packages('leaflet')
+```
+
+```{r printDatetimeHeader, results='asis'}
+cat('#', format(Sys.Date(), '%A %d, %Y'), '\n')
+```
+
+I am going on a trip soon, with my girlfriend, to Europe! We are looking forward to visiting. Here are some of the places we'll be!
+
+```{r displayEuropeMap}
+m <- leaflet() %>%
+  addTiles() %>%
+  setView(lng=8.426514, lat=52.116204, zoom = 6) %>%
+  addMarkers(lat=52.520007, lng=13.404954, popup='Berlin') %>%
+  addMarkers(lat=51.227741, lng=6.773456, popup='Düsseldorf') %>%
+  addMarkers(lat=52.370216, lng=4.895168, popup='Amsterdam')
+m
+```
