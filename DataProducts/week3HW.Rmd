@@ -1,0 +1,49 @@
+---
+title: "Plotly Demonstration"
+author: "Douglas Young"
+date: "2/16/2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(plotly)
+options(warn=-1)
+```
+
+```{r printDatetimeHeader, results='asis'}
+cat('#', format(Sys.Date(), '%B %d, %Y'), '\n')
+```
+
+A plot of BTC price by USD over the last 2 years from 02/16/2017, using [Plotly](https://plot.ly/).
+<br />
+<br />
+```{r drawPlot, fig.align='center'}
+btcFile <- 
+  download.file('https://api.blockchain.info/charts/market-price?format=csv&timespan=all', 'btcMarketPrice.csv', 'curl')
+
+btcDataset <-
+  read.csv(
+    'btcMarketPrice.csv',
+    header=FALSE,
+    colClasses = c('Date', 'numeric'), 
+    col.names = c('Date', 'MarketPriceUSD')
+  )
+
+btcDataset2Years <- btcDataset[btcDataset$Date > Sys.Date() - (365 * 2), ]
+
+p <- 
+  plot_ly(btcDataset2Years, x = ~Date, y = ~MarketPriceUSD, name = 'BTC market price USD', type = 'scatter', mode = 'lines') %>%
+  layout(
+    title = "BTC price by USD over last 2 years",
+    xaxis = list(title = "Date", showgrid = F),
+    yaxis = list(title = "Market Price USD", showgrid=T)
+  )
+p
+```
+
+```{r}
+options(warn=0)
+```
+
+# Thank you!
